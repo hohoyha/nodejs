@@ -13,7 +13,15 @@ app.listen(3000, function() {
 });
 
 app.get('/topic/new', function(req, res){
-    res.render('new');
+    fs.readdir('data',  function(err, files){
+    if(err)
+    {            
+        console.log('err');
+        res.status(500).send('Internal Server Error');
+    }
+   
+    res.render('new', {topics:files});
+    });
 });
 
 app.post('/topic', function(req, res){
@@ -24,7 +32,8 @@ app.post('/topic', function(req, res){
             console.log('err');
             res.status(500).send('Internal Server Error');
         }
-        res.send('Success!');
+       
+        res.redirect('/topic/'+title);
     });
 
 });

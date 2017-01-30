@@ -3,11 +3,25 @@ html
   head
      meta(charset='utf-8')
   body
-    form(action='/topic', method='post')
-      p
-        input(type='text' name ='title' placeholder='title')
-      p
-        textarea(name='description')
-      p 
-        input(type='submit')
+    h2 
+      a(href='/topic/') Server Side JavaScript
+    ul
+       each topic in topics
+          li
+           a(href='/topic/'+topic)= topic
+    article
+       h2= title
+       p
+         =  description
+    article
+       a(href='/topic/new') new
+
+    article
+      form(action='/topic', method='post')
+        p
+          input(type='text' name ='title' placeholder='title')
+        p
+          textarea(name='description')
+        p 
+          input(type='submit')
       
