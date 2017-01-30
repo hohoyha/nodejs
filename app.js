@@ -29,36 +29,36 @@ app.post('/topic', function(req, res){
 
 });
 
-app.get('/topic', function(req, res){
-    fs.readdir('data',  function(err, files){
+app.get(['/topic','/topic/:id'], function(req, res){
+       fs.readdir('data',  function(err, files){
             if(err)
             {            
                 console.log('err');
                 res.status(500).send('Internal Server Error');
+            }
+
+            var id = req.params.id;
+            var tempData = "None Select"
+
+            if(id)
+            {
+                fs.readFile('data/'+id, 'utf8', function(err, data){
+                    if(err)
+                    {            
+                        console.log('err');
+                        res.status(500).send('Internal Server Error');
+                    }  
+                    tempData = data;  
+                    res.render('view', 
+                    {topics:files, title:id, description:tempData});  
+                });
+            }
+            else{
+                id = 'Welcome!';
+                   res.render('view', 
+                    {topics:files, title:id, description:tempData});  
             }
            
-            res.render('view', {topics:files});     
         });
 });
 
-app.get('/topic/:id', function(req, res){
-
-    var id = req.params.id;
-    fs.readdir('data',  function(err, files){
-        if(err)
-        {            
-            console.log('err');
-            res.status(500).send('Internal Server Error');
-        }
-  
-        fs.readFile('data/'+id, 'utf8', function(err, data){
-            if(err)
-            {            
-                console.log('err');
-                res.status(500).send('Internal Server Error');
-            }
-            res.render('view', 
-            {topics:files, title:id, description:data});
-        });
-    });
-});
