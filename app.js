@@ -1,6 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var fs = require('fs');
+var multer = require('multer');
+var upload = multer({dest: 'uploads/'});
 
 var app = express();
 app.locals.pretty = true;
@@ -10,6 +12,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.listen(3000, function() {
     console.log("Connected, 3000 port");
+});
+
+app.get('/upload', function(req, res){
+    res.render('upload');
+});
+
+app.post('/upload', upload.single('userfile'), function(req, res){
+    console.log(req.file);
+    res.send('Uploaded: ' + req.file);
 });
 
 app.get('/topic/new', function(req, res){
